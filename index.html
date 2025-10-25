@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Portal</title>
+    <link rel="stylesheet" href="fontawesome-free-6.7.1-web/css/all.min.css">
+    <style>
+        /* Poppins Font Embed */
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 300;
+            src: local('Poppins Light'), local('Poppins-Light'),
+                 url('fonts/poppins-light.woff2') format('woff2');
+        }
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Poppins Regular'), local('Poppins-Regular'),
+                 url('fonts/poppins-regular.woff2') format('woff2');
+        }
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 500;
+            src: local('Poppins Medium'), local('Poppins-Medium'),
+                 url('fonts/poppins-medium.woff2') format('woff2');
+        }
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 600;
+            src: local('Poppins SemiBold'), local('Poppins-SemiBold'),
+                 url('fonts/poppins-semibold.woff2') format('woff2');
+        }
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Poppins Bold'), local('Poppins-Bold'),
+                 url('fonts/poppins-bold.woff2') format('woff2');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-card {
+            background: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .lock-icon {
+            width: 64px;
+            height: 64px;
+            background: #000000;
+            color: #ffffff;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 28px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #666666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 400;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #999999;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: #000000;
+            color: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #333333;
+            border-color: #333333;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .result-message {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result-message.error {
+            background: #ffffff;
+            color: #000000;
+            border: 2px solid #000000;
+        }
+
+        .result-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .result-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .result-text p {
+            margin-bottom: 4px;
+        }
+
+        .result-text p:first-child {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .result-text p.small {
+            font-size: 12px;
+            color: #666666;
+        }
+
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .protocol-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #000000;
+            color: #ffffff;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .copyright {
+            margin-top: 12px;
+            font-size: 11px;
+            color: #999999;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .dashboard-header {
+            background: #000000;
+            color: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-title h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .dashboard-title p {
+            font-size: 14px;
+            color: #cccccc;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .dashboard-content {
+            background: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            padding: 32px;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .welcome-icon {
+            width: 80px;
+            height: 80px;
+            background: #000000;
+            color: #ffffff;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 40px;
+        }
+
+        .welcome-section h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .welcome-section p {
+            font-size: 14px;
+            color: #666666;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .info-card {
+            padding: 20px;
+            background: #f5f5f5;
+            border: 2px solid #000000;
+            border-radius: 8px;
+        }
+
+        .info-card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666666;
+            margin-bottom: 8px;
+        }
+
+        .info-card p {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="container" id="loginPage">
+        <div class="login-card">
+            <div class="header">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h1>Login Portal</h1>
+                <p>Masukkan kredensial Anda</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-input" 
+                        placeholder="Enter username"
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Enter password"
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+
+            <div id="result" class="result-message"></div>
+        </div>
+
+        <div class="footer">
+            <div class="protocol-badge">
+                <i class="fas fa-unlock"></i>
+                <span>Protocol: HTTP</span>
+            </div>
+            <p class="copyright">© 2025 Network Security Lab</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div class="dashboard" id="dashboardPage">
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <h2>Dashboard</h2>
+                <p id="loginTime"></p>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="welcome-section">
+                <div class="welcome-icon">
+                    <i class="fas fa-hand-wave"></i>
+                </div>
+                <h3>Selamat Datang, <span id="dashboardUsername"></span>!</h3>
+                <p>Anda berhasil masuk ke sistem</p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4><i class="fas fa-check-circle"></i> Status</h4>
+                    <p>Active</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fas fa-user-shield"></i> Role</h4>
+                    <p id="userRole"></p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fas fa-wifi"></i> Session</h4>
+                    <p>Connected</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const accounts = {
+            'admin': { password: 'admin123', role: 'Administrator' },
+            'user1': { password: 'password', role: 'User' },
+            'siswa': { password: '12345678', role: 'Student' }
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('result');
+            
+            console.log('═══════════════════════════════════════');
+            console.log('🔓 CREDENTIALS CAPTURED VIA HTTP');
+            console.log('═══════════════════════════════════════');
+            console.log('Username      :', username);
+            console.log('Password      :', password);
+            console.log('Timestamp     :', new Date().toLocaleString('id-ID'));
+            console.log('Protocol      : HTTP (Plain Text)');
+            console.log('User Agent    :', navigator.userAgent);
+            console.log('═══════════════════════════════════════');
+            
+            if (accounts[username] && accounts[username].password === password) {
+                // Redirect to dashboard
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboardPage').style.display = 'block';
+                document.getElementById('dashboardUsername').textContent = username;
+                document.getElementById('userRole').textContent = accounts[username].role;
+                document.getElementById('loginTime').textContent = 'Login: ' + new Date().toLocaleString('id-ID');
+            } else {
+                resultDiv.className = 'result-message error';
+                resultDiv.innerHTML = `
+                    <div class="result-content">
+                        <span class="result-icon"><i class="fas fa-times-circle"></i></span>
+                        <div class="result-text">
+                            <p>Login Failed!</p>
+                            <p class="small">Invalid username or password</p>
+                        </div>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+                
+                setTimeout(() => {
+                    resultDiv.style.display = 'none';
+                }, 3000);
+            }
+        });
+
+        function logout() {
+            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('loginForm').reset();
+        }
+    </script>
+</body>
+</html>

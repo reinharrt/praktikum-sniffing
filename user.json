@@ -1,0 +1,19 @@
+{
+  "accounts": [
+    {
+      "username": "admin",
+      "password": "admin123",
+      "role": "Administrator"
+    },
+    {
+      "username": "user1",
+      "password": "password",
+      "role": "User"
+    },
+    {
+      "username": "siswa",
+      "password": "12345678",
+      "role": "Student"
+    }
+  ]
+}
