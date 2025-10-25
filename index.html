@@ -375,7 +375,7 @@
                 <i class="fas fa-unlock"></i>
                 <span>Protocol: HTTP</span>
             </div>
-            <p class="copyright">© 2025 Network Security Lab</p>
+            <p class="copyright">© 2025 github@reinnhart</p>
         </div>
     </div>
 
@@ -418,11 +418,17 @@
     </div>
 
     <script>
-        const accounts = {
-            'admin': { password: 'admin123', role: 'Administrator' },
-            'user1': { password: 'password', role: 'User' },
-            'siswa': { password: '12345678', role: 'Student' }
-        };
+        let accounts = [];
+
+        // Fetch user data from user.json
+        fetch('user.json')
+            .then(response => response.json())
+            .then(data => {
+                accounts = data.accounts;
+            })
+            .catch(err => {
+                console.error('Failed to load user data');
+            });
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -434,12 +440,15 @@
             // Send HTTP POST request (will be captured by Wireshark)
             sendLoginRequest(username, password);
             
-            if (accounts[username] && accounts[username].password === password) {
+            // Find user in accounts array
+            const user = accounts.find(acc => acc.username === username && acc.password === password);
+            
+            if (user) {
                 setTimeout(() => {
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('dashboardPage').style.display = 'block';
                     document.getElementById('dashboardUsername').textContent = username;
-                    document.getElementById('userRole').textContent = accounts[username].role;
+                    document.getElementById('userRole').textContent = user.role;
                     document.getElementById('loginTime').textContent = 'Login: ' + new Date().toLocaleString('id-ID');
                 }, 500);
             } else {

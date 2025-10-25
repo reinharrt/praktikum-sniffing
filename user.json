@@ -6,6 +6,11 @@
       "role": "Administrator"
     },
     {
+      "username": "sep",
+      "password": "sepisepi",
+      "role": "Administrator"
+    },
+    {
       "username": "user1",
       "password": "password",
       "role": "User"
