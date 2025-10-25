@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Portal</title>
-    <link rel="stylesheet" href="fontawesome-free-7.1.0-web/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Poppins Font Embed */
         @font-face {
@@ -337,7 +337,7 @@
                 <p>Masukkan kredensial Anda</p>
             </div>
 
-            <form id="loginForm">
+            <form id="loginForm" method="POST" action="login.php">
                 <div class="form-group">
                     <label for="username" class="form-label">Username</label>
                     <input 
@@ -431,23 +431,17 @@
             const password = document.getElementById('password').value;
             const resultDiv = document.getElementById('result');
             
-            console.log('═══════════════════════════════════════');
-            console.log('🔓 CREDENTIALS CAPTURED VIA HTTP');
-            console.log('═══════════════════════════════════════');
-            console.log('Username      :', username);
-            console.log('Password      :', password);
-            console.log('Timestamp     :', new Date().toLocaleString('id-ID'));
-            console.log('Protocol      : HTTP (Plain Text)');
-            console.log('User Agent    :', navigator.userAgent);
-            console.log('═══════════════════════════════════════');
+            // Send HTTP POST request (will be captured by Wireshark)
+            sendLoginRequest(username, password);
             
             if (accounts[username] && accounts[username].password === password) {
-                // Redirect to dashboard
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('dashboardPage').style.display = 'block';
-                document.getElementById('dashboardUsername').textContent = username;
-                document.getElementById('userRole').textContent = accounts[username].role;
-                document.getElementById('loginTime').textContent = 'Login: ' + new Date().toLocaleString('id-ID');
+                setTimeout(() => {
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('dashboardPage').style.display = 'block';
+                    document.getElementById('dashboardUsername').textContent = username;
+                    document.getElementById('userRole').textContent = accounts[username].role;
+                    document.getElementById('loginTime').textContent = 'Login: ' + new Date().toLocaleString('id-ID');
+                }, 500);
             } else {
                 resultDiv.className = 'result-message error';
                 resultDiv.innerHTML = `
@@ -467,10 +461,27 @@
             }
         });
 
+        function sendLoginRequest(username, password) {
+            const formData = new URLSearchParams();
+            formData.append('username', username);
+            formData.append('password', password);
+            formData.append('action', 'login');
+            
+            // Send POST request (traffic will be captured by Wireshark/Ettercap)
+            fetch('login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData.toString()
+            }).catch(err => {
+                // Silent catch - request is sent even if it fails
+            });
+        }
+
         function logout() {
-            document.getElementById('dashboardPage').style.display = 'none';
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('loginForm').reset();
+            // Reload page to reset state
+            location.reload();
         }
     </script>
 </body>
